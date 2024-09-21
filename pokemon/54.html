@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Importing FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+    <title>PokeDex</title>
+</head>
+<body onload="getPokemon(1)">
+    <h1>PokeDex</h1>
+    <div id="poke_container" class="poke-container"></div>
+    <script src="../js/main.js"></script>
+    <script>
+        (async () => {
+            const pokemon_id = location.href.split("/").reverse()[0].split(".")[0]
+            const pokemon_json = await getPokemon(pokemon_id);     
+            
+            // Add description to card
+            const el = createPokemonCard(pokemon_json);            
+            poke_container.append(el);
+            const description = await getPokemonDescription(pokemon_id)
+            const description_div = document.querySelector('.description');
+            description_div.innerHTML = description.join("<br>");
+
+            // Add additional images to card
+            window['pokemon_json'] = pokemon_json;
+            
+            const images_els = Object.values(pokemon_json.sprites).filter( i => typeof(i) == "string")
+            console.log(images_els);
+            images_els.map( url => {
+                console.log(url);
+                const img_el = document.createElement('img');
+                img_el.src = url;
+                document.querySelector(".img-container").append(img_el);
+                return img_el;
+            })
+            
+        })();
+    </script>
+</body>
+</html>
