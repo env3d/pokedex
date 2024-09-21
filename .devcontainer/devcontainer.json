@@ -1,6 +1,6 @@
 {
   "image": "mcr.microsoft.com/devcontainers/php:8.1",
   "features": {
-  }
+  },
   "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
 }
