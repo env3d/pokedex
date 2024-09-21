@@ -24,7 +24,7 @@
             poke_container.append(el);
             const description = await getPokemonDescription(pokemon_id)
             const description_div = document.querySelector('.description');
-            description_div.innerHTML = description.join("<br>");
+            description_div.innerHTML = description.join("<p/>");
 
             // Add additional images to card
             window['pokemon_json'] = pokemon_json;
