@@ -4,7 +4,21 @@ require '.env';
 
 session_start();
 
-if (isset($_SESSION['visited']) && count($_SESSION['visited']) > 5) {
+if (isset($_GET['restart'])) {
+    $_SESSION['visited'] = array();
+    // Get the current URL
+    $current_url = $_SERVER['REQUEST_URI'];
+    
+    // Remove the query string
+    $parsed_url = parse_url($current_url);
+    $redirect_url = $parsed_url['path'];
+    
+    // Redirect to the same path without parameters
+    header("Location: $redirect_url");
+    exit();    
+}
+
+if (isset($_SESSION['visited']) && count($_SESSION['visited']) >= 5) {
      
     include("horoscope.html");
     flush();

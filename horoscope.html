@@ -22,12 +22,8 @@
 
     <script>
         document.querySelector('button').addEventListener('click', evt => {
-            cookieStore.delete('PHPSESSID').then(
-                () => {
-                    location.reload();
-                }
-            );
-        })
+            window.location.href = `${window.location.href.split('?')[0]}?restart`;
+        });
     </script>   
 </body>
 </html>
