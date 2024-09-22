@@ -20,6 +20,21 @@ const colors = {
 const main_types = Object.keys(colors);
 console.log(main_types);
 
+// login_script_el = document.createElement('script');
+// login_script_el.src = `src="https://apis.google.com/js/platform.js"`
+// login_script_el.async = true;
+// login_script_el.defer = true;
+// login_meta_el = document.createElement('meta');
+// login_meta_el.name = "google-signin-client_id";
+// login_meta_el.content = "107256413984-r8i468m63oe3afq55gc5aoto78voelpi.apps.googleusercontent.com";    
+// document.head.append(login_script_el);
+// document.head.append(login_meta_el);
+
+// login_button_el = document.createElement('div');
+// login_button_el.classList.add("g-signin2");
+// login_button_el['data-onsuccess'] = "onSignIn";
+// document.body.prepend(login_button_el);
+
 function createPokemonCard(pokemon) {
     const pokemonEl = document.createElement('div');
     pokemonEl.classList.add('pokemon');

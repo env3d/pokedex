@@ -112,6 +112,12 @@ button:active {
     transform: scale(0.95);
 }
 
+#loginButton {
+    position: fixed;
+    right: 5px;
+    top: 5px;
+}
+
 /* Difference between 'line-height' and 'letter-spacing' :
 *   'line-height' controls vertical space between sentences.
 *   'letter-spacing' controls space between letters in a single sentence.
