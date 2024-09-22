@@ -46,7 +46,9 @@ if (isset($_GET['pokemon'])) {
     array_push($_SESSION['visited'], $id);    
     
     $html_string = file_get_contents("pokemon/$id.html");
-    print(preg_replace("/(const pokemon_id =).*/", "$1 $id;", $html_string));          
+    $html_string = preg_replace("/(const pokemon_id =).*/", "$1 $id;", $html_string);
+    $html_string = preg_replace("/\.\.\//", "", $html_string);
+    print($html_string);          
 
 } else {
     $index_html = file_get_contents('index.html');
