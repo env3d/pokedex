@@ -38,9 +38,9 @@ if (isset($_SESSION['visited']) && count($_SESSION['visited']) > 5) {
     exit;
 }
 
-if (isset($_GET['pokemon'])) {
+if (isset($_GET['id'])) {
 
-    $id = $_GET['pokemon'];
+    $id = $_GET['id'];
 
     if (!isset($_SESSION['visited'])) $_SESSION['visited'] = array();
     array_push($_SESSION['visited'], $id);    
