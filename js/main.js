@@ -87,7 +87,9 @@ const fetchPokemons = async() => {
     for (let i = 1; i <= pokemons_number; i++) {
         pokemon = await getPokemon(i);
         el = createPokemonCard(pokemon);
-        el.innerHTML = `<a href="pokemon/${i}.html">` + el.innerHTML +`</a>`
+        html_link = `<a href="pokemon/${i}.html">` + el.innerHTML +`</a>`
+        php_link = `<a href="index.php?pokemon=${i}">` + el.innerHTML +`</a>`        
+        el.innerHTML = location.pathname.endsWith('html') ? html_link : php_link;
         poke_container.appendChild(el);        
     }
 }
