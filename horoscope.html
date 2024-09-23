@@ -12,16 +12,17 @@
 </head>
 <body>
     <h1>Poke Horoscope</h1>
+    <div id="loginButton"></div>
     <div id="poke_container" class="poke-container">
         <div class="pokemon description">    
             <span class="blinking">Generating Horoscope...</span>       
         </div>
     </div>
 
-    <button>Restart</button>
+    <button id="restart">Restart</button>
 
     <script>
-        document.querySelector('button').addEventListener('click', evt => {
+        document.querySelector('#restart').addEventListener('click', evt => {
             window.location.href = `${window.location.href.split('?')[0]}?restart`;
         });
     </script>   

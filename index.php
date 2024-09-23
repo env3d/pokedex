@@ -2,7 +2,8 @@
 require 'vendor/autoload.php';
 require '.env';
 
-function reload() {
+function reload()
+{
     // Get the current URL
     $current_url = $_SERVER['REQUEST_URI'];
 
@@ -15,11 +16,58 @@ function reload() {
     exit();
 }
 
+function show_login()
+{
+    if (!isset($_SESSION['email']) || !isset($_SESSION['name']) || !isset($_SESSION['pic'])) {
+        print('<script src="https://accounts.google.com/gsi/client" async></script>
+<script>
+    function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        const jwt = response.credential;        
+        const payload = JSON.parse(atob(jwt.split(".")[1]))
+        fetch(`${location.href.split("?")[0]}?email=${payload["email"]}&pic=${payload["picture"]}&name=${payload["name"]}`)
+        .then( () => location.reload());            
+    }
+    window.addEventListener("load", function () {
+        google.accounts.id.initialize({
+            client_id: "107256413984-r8i468m63oe3afq55gc5aoto78voelpi.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("loginButton"),
+            { theme: "outline", size: "large" }  // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+    });
+</script>
+');
+    } else {
+        $name = $_SESSION['name'];
+        $pic = $_SESSION['pic'];
+        print("
+<script>
+loginButton.innerHTML = '<img src=\'$pic\'/>';
+</script>
+");
+    }
+}
+
+function paywall() {
+    if (!isset($_SESSION['email'])) {
+        show_login();
+        print("<script>
+        document.querySelector('.description').innerHTML = `Please login to see your horoscope`;
+        document.querySelector('#restart').style.display = 'none';
+        </script>");
+        exit;
+    }
+}
+
 session_start();
 
 if (isset($_GET['restart'])) {
     $_SESSION['visited'] = array();
-    reload();    
+    reload();
 }
 
 if (isset($_GET['email']) && isset($_GET['pic']) && isset($_GET['name'])) {
@@ -34,6 +82,8 @@ if (isset($_SESSION['visited']) && count($_SESSION['visited']) >= 5) {
     include("horoscope.html");
     flush();
 
+    paywall();
+    
     $visited_ids = implode(", ", array_slice($_SESSION['visited'], -5));
 
     $client = OpenAI::client($yourApiKey);
@@ -79,35 +129,4 @@ if (isset($_GET['id'])) {
     print($index_html);
 }
 
-if (!isset($_SESSION['email']) || !isset($_SESSION['name']) || !isset($_SESSION['pic'])) {
-    print('<script src="https://accounts.google.com/gsi/client" async></script>
-<script>
-    function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        const jwt = response.credential;        
-        const payload = JSON.parse(atob(jwt.split(".")[1]))
-        fetch(`${location.href.split("?")[0]}?email=${payload["email"]}&pic=${payload["picture"]}&name=${payload["name"]}`)
-        .then( () => location.reload());            
-    }
-    window.addEventListener("load", function () {
-        google.accounts.id.initialize({
-            client_id: "107256413984-r8i468m63oe3afq55gc5aoto78voelpi.apps.googleusercontent.com",
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById("loginButton"),
-            { theme: "outline", size: "large" }  // customization attributes
-        );
-        google.accounts.id.prompt(); // also display the One Tap dialog
-    });
-</script>
-');
-} else {    
-    $name = $_SESSION['name'];
-    $pic = $_SESSION['pic'];
-    print("
-<script>
-loginButton.innerHTML = '<img src=\'$pic\'/>';
-</script>
-");
-}
+show_login();
