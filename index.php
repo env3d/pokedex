@@ -2,6 +2,9 @@
 require 'vendor/autoload.php';
 require '.env';
 
+ini_set('session.cookie_samesite', 'None');
+ini_set('session.cookie_secure', 'True');
+
 function reload()
 {
     // Get the current URL
@@ -64,6 +67,29 @@ function paywall() {
 }
 
 session_start();
+
+if (isset($_GET['image'])) {
+
+    // Set the content type to PNG (or JPEG, GIF, etc. based on the image type)
+    header('Content-Type: image/png');
+
+    $image_id = $_GET['image'];
+    
+    // Load the image from the file
+    $image = imagecreatefrompng("images/$image_id.png");
+
+    $text_color = imagecolorallocate($image, 255, 255, 255); // black text
+
+    if (isset($_SESSION['name'])) {
+        imagestring($image, 5, 5, 5, $_SESSION['name'], $text_color);
+    }
+    // Output the image as PNG
+    imagepng($image);
+    
+    // Free up memory
+    imagedestroy($image);
+    exit;   
+}
 
 if (isset($_GET['restart'])) {
     $_SESSION['visited'] = array();
