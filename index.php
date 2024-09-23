@@ -76,7 +76,7 @@ if (isset($_GET['image'])) {
     $image_id = $_GET['image'];
     
     // Load the image from the file
-    if (isset($_SESSION['visited']) && count($_SESSION['visited']) >= 5 ) {
+    if (isset($_SESSION['visited']) && count($_SESSION['visited']) > 0 ) {
         $image_id = end($_SESSION['visited']);
     }
     $image = imagecreatefrompng("images/$image_id.png");
