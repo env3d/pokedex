@@ -76,6 +76,9 @@ if (isset($_GET['image'])) {
     $image_id = $_GET['image'];
     
     // Load the image from the file
+    if (isset($_SESSION['visited']) && count($_SESSION['visited']) >= 5 ) {
+        $image_id = end($_SESSION['visited']);
+    }
     $image = imagecreatefrompng("images/$image_id.png");
 
     $text_color = imagecolorallocate($image, 255, 255, 255); // black text
