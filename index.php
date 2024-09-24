@@ -85,8 +85,9 @@ if (isset($_GET['image'])) {
 
     if (isset($_SESSION['name'])) {
         imagestring($image, 5, 5, 5, $_SESSION['name'], $text_color);
-        imagestring($image, 5, 5, 20, "Last pokemon you picked", $text_color);
     }
+    imagestring($image, 5, 5, 20, "Last pokemon you picked", $text_color);
+    
     // Output the image as PNG
     imagepng($image);
     
