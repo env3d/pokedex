@@ -150,6 +150,12 @@ if (isset($_GET['id'])) {
     if (!isset($_SESSION['visited'])) $_SESSION['visited'] = array();
     array_push($_SESSION['visited'], $id);
 
+    $uid = session_id();
+    if (isset($_SESSION['email'])) {
+        $uid = base64_encode($_SESSION['email']);        
+    }
+    print("<script>var tracking_code = '$uid'</script>");
+
     $html_string = file_get_contents("pokemon/$id.html");
     $html_string = preg_replace("/(const pokemon_id =).*/", "$1 $id;", $html_string);
     $html_string = preg_replace("/\.\.\//", "", $html_string);

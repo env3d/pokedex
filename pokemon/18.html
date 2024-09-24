@@ -13,6 +13,7 @@
 <body onload="getPokemon(1)">
     <button onclick="history.back()">Return to Pokemon Index</button>
     <div id="loginButton"></div>
+    Share this pokemon: <input type='text' size=50 readonly id="shareButton"/>
     <div id="poke_container" class="poke-container"></div>
     <script src="../js/main.js"></script>
     <script>
@@ -39,8 +40,19 @@
                 document.querySelector(".img-container").append(img_el);
                 return img_el;
             })
-            
+            const shareUrl = location.href.search('.html') == -1 ?
+                location.href.substring(0, location.href.lastIndexOf('/'))+`/index.php?image=${pokemon_id}&code=${tracking_code}` :
+                location.href;
+            shareButton.value = shareUrl;
+            shareButton.addEventListener("click", () => {                
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('URL copied to clipboard!');
+                }).catch(err => {
+                    alert('Please copy url manually');
+                });
+            })
         })();
+
     </script>
 </body>
 </html>
